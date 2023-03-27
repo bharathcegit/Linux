@@ -400,9 +400,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 ```
 - systemctl restart tomcat
 
-> ## INSTALLATION AND CONFIGURATION OF HAPROXY
-
-- Installartion of haproxy
+- Installation of apache
 ```
 sudo apt install apache2
 ````
@@ -432,7 +430,54 @@ http:// ipadress
 ```
 
 
+> ## INSTALLATION AND CONFIGIUARION OF HAPROXY
 
+- On haproxy server edit /etc/hosts file and add application server ip adress
+```
+sudo vi /etc/hosts
+```
+- installation of haproxy
+```
+sudo apt-get update
+sudo apt-get upgrade
+sudo sudo apt install haproxy
+```
+- Configuration of haproxy as a load balancer
+
+- Edit the /etc/haproxy/haproxy.cfg file
+```
+sudo vi etc/haproxy/haproxy.cfg
+
+```
+- Add this Text with your Application server ipadress 
+```
+frontend haproxy_in
+        bind *:80
+        mode http
+        default_backend haproxy_http
+
+backend haproxy_http
+        balance roundrobin
+        mode http
+        server servera 172.31.49.93:80 check
+```
+
+- Now restart haproxy 
+```
+sudo systemctl restart haproxy.service
+```
+- Now check the status of the haproxy
+```
+sudo systemctl status haproxy.service
+```
+- Now start the haproxy
+```
+sudo systemctl start haproxy.service
+```
+- Now open haproxy in browser
+```
+http://ipadress
+```
 
 
 
